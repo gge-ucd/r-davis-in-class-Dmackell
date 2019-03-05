@@ -1,0 +1,67 @@
+---
+title: "Week 9 in Class"
+author: "Desmond Mackell"
+date: "March 5, 2019"
+output: html_document
+---
+
+This is an R Markdown document. 
+
+**this is bold**
+
+*this is italic*
+
+###this makes the font big
+
+##this makes the font even bigger
+
+#this makes the font even even biggger
+
+```{r, warning=FALSE, message=FALSE}
+# warnings=F and message=F get rid of those when knitting document
+# if i put echo=F none of the code would be knitted only the plot
+# you can also suppress seeing the library by 
+# suppressPackageStartupMessages(library())
+library(tidyverse)
+glimpse(storms)
+library(viridis)
+
+ggplot(data=storms)+
+  geom_jitter(aes(x = as.factor(month), y = pressure, fill = wind), pch = 21, alpha = .05)+
+  scale_fill_viridis_c()+
+  theme_bw()+
+  labs(title= "Hurricane Pressure v Month", subtitle = "with Max Wind Speed", x = "Month")
+
+```
+
+Writing out equations in Rmarkdown: 
+
+If you want to write an equation, you put a $ on either side of it. 
+
+$\sum_{i=y}^n X_i$
+
+```{r}
+library(knitr)
+library(htmlTable)
+kable(head(storms), caption = "Table using Kable")
+
+htmlTable::htmlTable(head(storms))
+
+#make an interactive table 
+library(DT)
+DT::datatable(storms)
+
+```
+
+```{r}
+library(plotly)
+
+ggplotly(
+  ggplot(data=storms)+
+  geom_jitter(aes(x = as.factor(month), y = pressure, fill = wind), pch = 21, alpha = .05)+
+  scale_fill_viridis_c()+
+  theme_bw()+
+  labs(title= "Hurricane Pressure v Month", subtitle = "with Max Wind Speed", x = "Month")
+)
+```
+

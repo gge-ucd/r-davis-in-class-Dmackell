@@ -1,0 +1,60 @@
+---
+title: "Week 9 Assignment"
+author: "Desmond Mackell"
+date: "March 12, 2019"
+output:
+    html_document: default
+---
+
+For my Master's project I have been attaching gps/satellite backpacks to Cinnamon Teal (*Anas cyanoptera*) in seven western states to track their movements and habitat use. **I will be looking to identify regions of high use, migration corridors, nesting sites, molting sites, staging sites and wintering sites**. I will also be looking at the timing of major life events and the level of fidelity to specific sites.  Most information known about this species' range and habitat use has come primarily from band returns and sitings. With the use of GPS technology I will look to add to the literature and understanding of this birds movements and land use.
+
+
+
+![Cinnamon Teal](../images/Week9.jpg)
+
+# Use the storms data (included in RStudio) to create a plotly graph of the relationship between wind and pressure, where the status of the storm is indicated by a color.
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(plotly)
+
+
+ggplotly(
+  ggplot(data=storms)+
+  geom_jitter(aes(x = wind, y = pressure, col = status), pch = 21, alpha = .05)+
+  scale_fill_viridis_c()+
+  theme_bw()+
+  labs(title= "Wind v Pressure")
+)
+```
+
+# Create a table that identifies the mean wind, pressure, ts_diameter, hu_diameter of each status of storm (remember to remove NAs!). Use the package htmlTable. Round each mean to only two decimal places (Hint
+look up the function round)
+
+```{r}
+library(htmlTable)
+
+storms1 <- drop_na(storms) %>%
+  group_by(status) %>% 
+  summarise(mean_wind = mean(wind), mean_pressure = mean(pressure), mean_ts_diameter = mean(ts_diameter), mean_hu_diameter = mean(hu_diameter))
+
+# rounding the columns
+storms1$mean_wind<- round(storms1$mean_wind, digits = 2)
+storms1$mean_pressure <- round(storms1$mean_pressure, digits = 2)
+storms1$mean_ts_diameter <- round(storms1$mean_ts_diameter, digits = 2)
+storms1$mean_hu_diameter <- round(storms1$mean_hu_diameter, digits=2)
+
+
+htmlTable::htmlTable(storms1)
+```
+
+
+
+
+
+
+
+
+
+
